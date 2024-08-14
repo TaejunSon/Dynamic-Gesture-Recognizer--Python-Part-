@@ -8,7 +8,7 @@ class PointHistoryClassifier(object):
     def __init__(
         self,
         model_path=r'C:\Users\UVRLab\Desktop\Intern\hand-gesture-recognition-mediapipe-main\model\point_history_classifier\point_history_classifier.tflite',
-        score_th=0.4,
+        score_th=0.3,
         invalid_value=0,
         num_threads=1,
     ):
@@ -40,7 +40,7 @@ class PointHistoryClassifier(object):
     
 
         if np.squeeze(result)[result_index] < self.score_th:
-            result_index = self.invalid_value #0.5이상의 결과가 나와야 됨.
+            result_index = self.invalid_value
 
         return result_index, confidence_score
     

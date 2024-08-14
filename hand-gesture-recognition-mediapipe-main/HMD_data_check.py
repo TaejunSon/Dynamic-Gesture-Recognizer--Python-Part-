@@ -11,7 +11,7 @@ host, port = "192.168.0.203", 25001
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 #sock.settimeout(3.0)
-classifier = PointHistoryClassifier()
+#classifier = PointHistoryClassifier()
 
 delay_time = 0
 
@@ -35,13 +35,13 @@ def pre_process_point_history(point_history):
     base_y = temp_point_history[1]
     
     for i in range(len(temp_point_history)):
-        #if i % 4 == 0 or i %4 == 1:
-        pre_process.append(temp_point_history[i])
+            pre_process.append(temp_point_history[i])
     for  i in range(len(pre_process)):
         if i%2 == 0:
             pre_process[i] -= base_x
         if i %2 ==1:
             pre_process[i] -= base_y
+    print("preprocessing length", len(pre_process))
     pre_process[0] = 0 
     pre_process[1] = 0
     return pre_process
@@ -60,9 +60,10 @@ def Gesture_classify(index):
     elif (result_index == 7):
         print("Left")
 def save_to_csv(point_history):
-    with open('point_history.csv', mode = 'a', newline='') as file:
+    with open('HMD_point_history_40_5.csv', mode = 'a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(point_history)        
+        
 try:
     sock.connect((host, port))
     print("Connet success")
@@ -70,8 +71,8 @@ try:
 
     while True:
         #received_data = recv_all(sock, 8)
-        
         received_data = recv_all(sock, 8)
+        print("Data Receive")
         if received_data:
             x, y = struct.unpack('ff', received_data)
             print("x position ", x)
@@ -80,10 +81,34 @@ try:
             point_history.append(y)
             
             if len(point_history) == 16:
-                result_index, confidence_score = classifier(pre_process_point_history(point_history))
-                Gesture_classify(result_index)
-                sock.sendall(struct.pack('i', result_index))
-
+                save_to_csv(pre_process_point_history(point_history))
+                #result_index, confidence_score = classifier(pre_process_point_history(point_history))
+                #print("Sending is okay")
+                
+                sock.sendall(struct.pack('i', 8))
+                #sock.sendall(struct.pack('i', result_index))
+                #print("Sending okay")
+                #if 0< result_index <3 or 3 < result_index < 8:
+                 #   if delay_time == 0:
+                  #      sock.sendall(struct.pack('i', result_index))
+                   #     delay_time += 1
+                    #else:
+                     #   sock.sendall(struct.pack('i', 8))
+                      ##  delay_time +=1
+                        #print("delay count up   ")
+                #if (delay_time == 10):
+                 #   delay_time = 0
+                
+                #if delay_time >0:
+                 #   sock.sendall(struct.pack('i', 8))
+                  #  delay_time += 1
+                    
+                #elif delay_time >40:
+                 #   delay_time = 0
+                    
+                #elif  0< result_index <3 or 3< result_index < 8:
+                #    sock.sendall(struct.pack('i', result_index))
+            #    delay_time +=1
             else:
                 sock.sendall(struct.pack('i', 8))
         else:
