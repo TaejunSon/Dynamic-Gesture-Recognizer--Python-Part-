@@ -1,11 +1,8 @@
 # Dynamic Gesture Recognizer (Python Part)
  
-By using the hand-gesture-recognition-mediapipe-main -> Socket.py, TCP with Unity Project.
-
-hand-gesture-recognition-media-pipe -> model 
-1. point_history_8.csv
- 
-raw training data
+hand-gesture-recognition-media-pipe -> model <br>
+1. point_history_8.csv<br>
+raw training data<br>
 2. point_history_classifier.tflite
 
  trained model
