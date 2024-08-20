@@ -7,6 +7,5 @@ raw training data<br>
 trained model <br>
 3. point_history_classifier.py<br>
 classifier<br>
-<br>
 socket.py<br> 
 Receive data from unity, finger tip data x, y and send recognized gesture class.
